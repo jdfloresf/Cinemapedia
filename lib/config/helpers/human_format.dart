@@ -2,13 +2,13 @@ import 'package:intl/intl.dart';
 
 class HumanFormat{
 
-  static String number (double number) {
-    final formatterNumber = NumberFormat.compactCurrency(
-      decimalDigits: 0,
+  static String number (double number, [int decimals = 0]) {
+    final formattedNumber = NumberFormat.compactCurrency(
+      decimalDigits: decimals,
       symbol: '',
       locale: 'en'
     ).format(number);
 
-    return formatterNumber;
+    return formattedNumber;
   }
 }
