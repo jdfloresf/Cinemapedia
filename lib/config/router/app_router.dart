@@ -1,63 +1,35 @@
 import 'package:go_router/go_router.dart';
 
 import 'package:cinemapedia/presentation/screens/screens.dart';
-import 'package:cinemapedia/presentation/views/views.dart';
+
 
 final appRuter = GoRouter(
-  initialLocation: '/',
+  initialLocation: '/home/0',
   routes: [
-
-
-    ShellRoute(
-      builder: (context, state, child) {
-        return HomeScreen(childView: child);
+    //Rutas padre/hijo
+    GoRoute(
+      path: '/home/:page',
+      name: HomeScreen.name,
+      builder: (context, state) {
+        final pageIndex = int.parse(state.pathParameters['page'] ?? '0');
+        return HomeScreen(pageIndex: pageIndex);
       },
-
       routes: [
         GoRoute(
-          path: '/',
+          path: 'movie/:id',
+          name: MovieScreen.name,
           builder: (context, state) {
-            return const HomeView();
-          },
-          routes: [
-            GoRoute(
-              path: 'movie/:id',
-              name: MovieScreen.name,
-              builder: (context, state) {
-                final movieId = state.pathParameters['id'] ?? 'no-id';
+            final movieId = state.pathParameters['id'] ?? 'no-id';
 
-                return MovieScreen(movieId: movieId);
-              },
-            ),
-          ]
-        ),
-        
-        GoRoute(
-          path: '/favorites',
-          builder: (context, state) {
-            return const FavoritesView();
+            return MovieScreen(movieId: movieId);
           },
-        ),
-      ],
+        )
+      ]
     ),
-    
-    
-    //Rutas padre/hijo
-    // GoRoute(
-    //   path: '/',
-    //   name: HomeScreen.name,
-    //   builder: (context, state) => const HomeScreen(childView: HomeView(),),
-    //   routes: [
-        // GoRoute(
-        //   path: 'movie/:id',
-        //   name: MovieScreen.name,
-        //   builder: (context, state) {
-        //     final movieId = state.pathParameters['id'] ?? 'no-id';
 
-        //     return MovieScreen(movieId: movieId);
-        //   },
-        // )
-    //   ]
-    // ),
+    GoRoute(
+      path: '/',
+      redirect: (_ , __) => '/home/0',
+    ),
   ]
 );
