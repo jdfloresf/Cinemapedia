@@ -7,8 +7,8 @@ import 'package:cinemapedia/domain/entities/movie.dart';
 import 'package:cinemapedia/presentation/delegates/search_movie_delegate.dart';
 import 'package:cinemapedia/presentation/providers/providers.dart';
 
-class CustomAppBar extends ConsumerWidget {
-  const CustomAppBar({super.key});
+class CustomAppbar extends ConsumerWidget {
+  const CustomAppbar({super.key});
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {

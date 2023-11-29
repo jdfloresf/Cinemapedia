@@ -1,90 +1,105 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
+import 'package:cinemapedia/presentation/providers/providers.dart';
 import 'package:cinemapedia/presentation/widgets/widgets.dart';
-import '../../providers/providers.dart';
+
 
 class HomeView extends ConsumerStatefulWidget {
-  const HomeView({super.key});
+  const HomeView({ super.key });
 
   @override
   HomeViewState createState() => HomeViewState();
 }
 
-class HomeViewState extends ConsumerState<HomeView> {
+class HomeViewState extends ConsumerState<HomeView> with AutomaticKeepAliveClientMixin {
+
   @override
   void initState() {
     super.initState();
-
-    ref.read(nowPlayingMoviesProvider.notifier).loadNextPage();
-    ref.read(popularMoviesProvider.notifier).loadNextPage();
-    ref.read(upcomingMoviesProvider.notifier).loadNextPage();
-    ref.read(topRatedMoviesProvider.notifier).loadNextPage();
+    
+    ref.read( nowPlayingMoviesProvider.notifier ).loadNextPage();
+    ref.read( popularMoviesProvider.notifier ).loadNextPage();
+    ref.read( topRatedMoviesProvider.notifier ).loadNextPage();
+    ref.read( upcomingMoviesProvider.notifier ).loadNextPage();
   }
+
 
   @override
   Widget build(BuildContext context) {
+    super.build(context);
+
     final initialLoading = ref.watch(initialLoagingProvider);
-    if(initialLoading) return const FullScreenLoader();
-
-    final slideshow = ref.watch(moviesSlidesowProvider);
+    if ( initialLoading ) return const FullScreenLoader();
     
-    final nowPlayingMovies = ref.watch(nowPlayingMoviesProvider);
-    final popularMovies = ref.watch(popularMoviesProvider);
-    final upComingMovies = ref.watch(upcomingMoviesProvider);
-    final topRatedMovies = ref.watch(topRatedMoviesProvider);
-
+    final slideShowMovies = ref.watch( moviesSlidesowProvider );
+    final nowPlayingMovies = ref.watch( nowPlayingMoviesProvider );
+    final topRatedMovies = ref.watch( topRatedMoviesProvider );
+    final upcomingMovies = ref.watch( upcomingMoviesProvider );
 
     return CustomScrollView(
       slivers: [
+
         const SliverAppBar(
           floating: true,
           flexibleSpace: FlexibleSpaceBar(
-            title: CustomAppBar(),
+            title: CustomAppbar(),
           ),
         ),
 
-        SliverList(delegate: SliverChildBuilderDelegate(
-          (context, index){
-            return Column(
-              children: [
-                // const CustomAppBar(),
-                MoviesSlideShow(movies: slideshow),
-                MovieHorizontalListView(
-                  movies: nowPlayingMovies,
-                  title: 'En cines',
-                  subTitle: 'Sabado 11',
-                  loadNextPage: () => ref.read(nowPlayingMoviesProvider.notifier).loadNextPage(),
-                ),
-          
-                MovieHorizontalListView(
-                  movies: upComingMovies,
-                  title: 'Proximamente',
-                  subTitle: 'Este mes',
-                  loadNextPage: () => ref.read(upcomingMoviesProvider.notifier).loadNextPage(),
-                ),
-          
-                MovieHorizontalListView(
-                  movies: popularMovies,
-                  title: 'Populares',
-                  // subTitle: '',
-                  loadNextPage: () => ref.read(popularMoviesProvider.notifier).loadNextPage(),
-                ),
-          
-                MovieHorizontalListView(
-                  movies: topRatedMovies,
-                  title: 'Mejor calificadas',
-                  subTitle: 'Desde siempre',
-                  loadNextPage: () => ref.read(topRatedMoviesProvider.notifier).loadNextPage(),
-                ),
 
-                const SizedBox(height: 10),
-              ],
-            );
+        SliverList(delegate: SliverChildBuilderDelegate(
+          (context, index) {
+              return Column(
+                  children: [
+              
+                    // const CustomAppbar(),
+              
+                    MoviesSlideShow(movies: slideShowMovies ),
+              
+                    MovieHorizontalListView(
+                      movies: nowPlayingMovies,
+                      title: 'En cines',
+                      subTitle: 'Lunes 20',
+                      loadNextPage: () =>ref.read(nowPlayingMoviesProvider.notifier).loadNextPage()
+                      
+                    ),
+              
+                    MovieHorizontalListView(
+                      movies: upcomingMovies,
+                      title: 'Próximamente',
+                      subTitle: 'En este mes',
+                      loadNextPage: () =>ref.read(upcomingMoviesProvider.notifier).loadNextPage()
+                    ),
+              
+                    //* Ya no estará aquí, ahora es parte del menú inferior
+                    // MovieHorizontalListview(
+                    //   movies: popularMovies,
+                    //   title: 'Populares',
+                    //   // subTitle: '',
+                    //   loadNextPage: () =>ref.read(popularMoviesProvider.notifier).loadNextPage()
+                    // ),
+              
+                    MovieHorizontalListView(
+                      movies: topRatedMovies,
+                      title: 'Mejor calificadas',
+                      subTitle: 'Desde siempre',
+                      loadNextPage: () =>ref.read(topRatedMoviesProvider.notifier).loadNextPage()
+                    ),
+
+                    const SizedBox( height: 10 ),
+              
+              
+                  ],
+                );
           },
           childCount: 1
         )),
+
       ]
     );
   }
+  
+  @override
+  bool get wantKeepAlive => true;
 }

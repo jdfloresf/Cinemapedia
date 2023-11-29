@@ -1,5 +1,5 @@
-import 'package:cinemapedia/domain/datasources/local_storage_datasource.dart';
 import 'package:cinemapedia/domain/entities/movie.dart';
+import 'package:cinemapedia/domain/datasources/local_storage_datasource.dart';
 import 'package:cinemapedia/domain/repositories/local_storage_repository.dart';
 
 class LocalStorageRepositoryImpl extends LocalStorageRepository {
@@ -15,8 +15,8 @@ class LocalStorageRepositoryImpl extends LocalStorageRepository {
   }
 
   @override
-  Future<List<Movie>> loadMovie({int limit = 10, offset = 0}) {
-    return datasource.loadMovie(limit: limit, offset: offset);
+  Future<List<Movie>> loadMovies({int limit = 10, offset = 0}) {
+    return datasource.loadMovies(limit: limit, offset: offset);
   }
 
   @override

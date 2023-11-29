@@ -5,26 +5,29 @@ import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 import 'package:cinemapedia/config/theme/app_theme.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
-
+import 'package:intl/date_symbol_data_local.dart';
 
 Future<void> main() async{
+
   await dotenv.load(fileName: '.env');
 
-  runApp(const ProviderScope(child: MyApp()));
+  runApp(
+    const ProviderScope(child: MainApp() )
+  );
 }
 
-class MyApp extends StatelessWidget {
-  const MyApp({super.key});
+class MainApp extends StatelessWidget {
+  const MainApp({super.key});
 
-  // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
+
+    initializeDateFormatting();
+    
     return MaterialApp.router(
-      routerConfig: appRuter,
+      routerConfig: appRouter,
       debugShowCheckedModeBanner: false,
-      title: 'Flutter Demo',
       theme: AppTheme().getTheme(),
     );
   }
 }
-
